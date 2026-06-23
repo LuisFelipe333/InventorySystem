@@ -14,7 +14,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::query()
+        ->orderBy('code', 'desc')
+        ->get();
+        
+        return response()->json($products);
     }
 
     /**
