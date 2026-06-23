@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
@@ -18,9 +20,11 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        //
+        $product = Product::create($request->validated());
+
+        return response()->json($product, 201);
     }
 
     /**
