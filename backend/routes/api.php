@@ -18,3 +18,9 @@ Route::post('/profiles', [ProfileController::class, 'store']);
 Route::put('/profiles/{id}', [ProfileController::class, 'update']);
 Route::get('/profiles/{id}', [ProfileController::class, 'show']);   
 Route::delete('/profiles/{id}', [ProfileController::class, 'destroy']);
+
+Route::get('/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
+Route::post('/users', [\App\Http\Controllers\Api\UserController::class, 'store']);
+Route::put('/users/{id}', [\App\Http\Controllers\Api\UserController::class, 'update']);
+Route::get('/users/{id}', [\App\Http\Controllers\Api\UserController::class, 'show']);
+Route::delete('/users/{id}', [\App\Http\Controllers\Api\UserController::class, 'destroy']);

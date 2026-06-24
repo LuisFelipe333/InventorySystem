@@ -18,10 +18,10 @@ class Profile extends Model
     ];
 
     protected $casts = [
-        'section_ids' => 'array',
+        'section_ids' => 'array', //Se castea section_ids como un array para que se pueda almacenar correctamente en MongoDB
     ];
 
-    protected static function booted(): void
+    protected static function booted(): void //Se generara el id de perfil automaticamente
     {
         static::creating(function ($profile) {
 
