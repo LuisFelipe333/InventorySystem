@@ -66,58 +66,57 @@ class UserController extends Controller
     /**
      * Actualiza un usuario existente en la base de datos.
      */
-    public function update(UpdateUserRequest $request, string $id)
+    public function update(UpdateUserRequest $request, string $id) //Falta resolver eror del PUT
     {
-        Log::info('ENTRO AL UPDATE USER', [
-        'id' => $id,
-        'request' => $request->all(),
-        ]);
+      
+        try { //por los diversos errores que pueden surgir al actualizar un usuario por la imagen, se utiliza para manejar errores de manera adecuada. 
+            $user = User::find($id);
 
-        return response()->json([
-            'ok' => true,
-            'message' => 'Llegó al update',
-        ]);
-        // die('ESTOY EN UPDATE');
-        // try {
-        //     $user = User::find($id);
+            if ($user === null) {
+                return response()->json([
+                    'message' => 'Usuario no encontrado.',
+                ], 404);
+            }
 
-        //     if ($user === null) {
-        //         return response()->json([
-        //             'message' => 'Usuario no encontrado.',
-        //         ], 404);
-        //     }
+            $data = $request->validated();
 
-        //     $data = $request->validated();
+            if ($request->hasFile('photo')){
 
-        //     if ($request->hasFile('photo')){
+                if ($user->photo !== null) {
+                    Storage::disk('public')
+                        ->delete($user->photo);
+                }
 
-        //         if ($user->photo !== null) {
-        //             Storage::disk('public')
-        //                 ->delete($user->photo);
-        //         }
+                $data['photo'] = $request
+                    ->file('photo')
+                    ->store(
+                        'profile_photos',
+                        'public'
+                    );
+            }
 
-        //         $data['photo'] = $request
-        //             ->file('photo')
-        //             ->store(
-        //                 'profile_photos',
-        //                 'public'
-        //             );
-        //     }
+            if (empty($data['password'])) {
+                unset($data['password']);
+            }
 
-        //     if (empty($data['password'])) {
-        //         unset($data['password']);
-        //     }
+            $user->fill($data);
 
-        //     $user->update($data);
+            $dirtyBeforeSave = $user->getDirty();
 
-        //     return response()->json($user);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //     'message' => $e->getMessage(),
-        //     'file' => $e->getFile(),
-        //     'line' => $e->getLine(),
-        //     ], 500);
-        // }
+            $saved = $user->save();
+
+            return response()->json([
+                'saved' => $saved,
+                'dirty_before_save' => $dirtyBeforeSave, //por si quieres ver los cambios antes de guardar
+                'user' => $user->fresh(),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            ], 500);
+        }
         
     }
 
