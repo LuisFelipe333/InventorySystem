@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lista de productos
      */
     public function index()
     {
@@ -22,7 +23,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda un nuevo producto en la base de datos.
      */
     public function store(StoreProductRequest $request)
     {
@@ -32,26 +33,55 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Muestra un producto específico por su ID.
      */
     public function show(string $id)
     {
-        //
+        $product = Product::find($id);
+        if ($product === null) {
+            return response()->json([
+                'message' => 'Producto no encontrado', //Se realiza de esta forma para personalizar mensaje
+            ], 404);
+        }
+
+        return response()->json($product);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza un producto existente en la base de datos.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProductRequest  $request, string $id)
     {
-        //
+        $product = Product::find($id);
+        if ($product === null) {
+            return response()->json([
+                'message' => 'Producto no encontrado.', //Se realiza de esta forma para personalizar mensaje
+            ], 404);
+        }
+
+        $product->update(
+            $request->validated()
+        );
+
+        return response()->json($product);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un producto de la base de datos.
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        if ($product === null) {
+            return response()->json([
+                'message' => 'Producto no encontrado.', //Se realiza de esta forma para personalizar mensaje
+            ], 404);
+        }
+
+        $product->delete();
+
+        return response()->json([
+            'message' => 'Producto eliminado correctamente.',
+        ]);
     }
 }
