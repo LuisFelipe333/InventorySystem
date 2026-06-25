@@ -66,7 +66,7 @@ class UserController extends Controller
     /**
      * Actualiza un usuario existente en la base de datos.
      */
-    public function update(UpdateUserRequest $request, string $id) //Falta resolver eror del PUT
+    public function update(UpdateUserRequest $request, string $id) //Se debe usar POST por errores con imagenes pero se debe usar _method=PUT
     {
       
         try { //por los diversos errores que pueden surgir al actualizar un usuario por la imagen, se utiliza para manejar errores de manera adecuada. 
@@ -101,15 +101,11 @@ class UserController extends Controller
 
             $user->fill($data);
 
-            $dirtyBeforeSave = $user->getDirty();
+            $user->save();
 
-            $saved = $user->save();
-
-            return response()->json([
-                'saved' => $saved,
-                'dirty_before_save' => $dirtyBeforeSave, //por si quieres ver los cambios antes de guardar
-                'user' => $user->fresh(),
-            ]);
+            return response()->json(
+                $user->fresh()
+            );
         } catch (\Exception $e) {
             return response()->json([
             'message' => $e->getMessage(),

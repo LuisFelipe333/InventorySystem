@@ -24,5 +24,9 @@ class SectionSeeder extends Seeder
         Section::create([
             'name' => 'Perfiles',
         ]);
+
+        Section::create([
+            'name' => 'Bitácora',
+        ]);
     }
 }

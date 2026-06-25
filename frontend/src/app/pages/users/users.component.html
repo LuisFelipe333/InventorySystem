@@ -1,1 +1,170 @@
-<p>users works!</p>
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>Usuarios</h2>
+
+        <button class="btn-primary">
+            Nuevo Usuario
+        </button>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Código</th>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Fecha de Creación</th>
+                <th>Acciones</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+            
+            @for (user of users; track user._id) {  <!-- Se utiliza *ngFor para llenar la tabla -->
+                <tr>
+
+                    <td>{{ user.code }}</td>
+
+                    <td>{{ user.email }}</td>
+
+                    <td>{{ user.name }}</td>
+
+                    <td>{{ user.created_at }}</td>
+
+                    <td>
+                        <button class="btn btn-sm btn-outline-info me-2"
+                        (click)="viewUser(user)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-outline-warning me-2"
+                        (click)="editUser(user)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-outline-danger"
+                        (click)="deleteUser(user)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+
+    
+    <div
+    class="modal fade"
+    id="userDetailModal"
+    tabindex="-1"
+    aria-labelledby="userDetailModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+        <div class="modal-header bg-dark text-white">
+
+            <h5 class="modal-title" id="userDetailModalLabel">
+            Detalle del Usuario
+            </h5>
+
+            <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+
+            <div class="col-md-4 text-center">
+
+                <img
+                [src]="environment.storageUrl + '/' + selectedUser?.photo"
+                class="img-fluid rounded-circle border"
+                alt="Foto de perfil">
+
+            </div>
+
+            <div class="col-md-8">
+
+                <p>
+                <strong>Usuario:</strong>
+                {{ selectedUser?.email }}
+                </p>
+
+                <p>
+                <strong>Nombre:</strong>
+                {{ selectedUser?.name }}
+                </p>
+
+                <p>
+                <strong>Teléfono:</strong>
+                {{ selectedUser?.phone }}
+                </p>
+
+                <hr>
+
+                <h6>Perfiles</h6>
+
+                <ul class="list-group">
+
+                @for (profile of selectedUser?.profile_ids; track profile) {
+
+                    <li class="list-group-item">
+                    {{ profile }}
+                    </li>
+
+                }
+
+                </ul>
+
+            </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cerrar
+            </button>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+
+
+
+
+
+
+</div>
