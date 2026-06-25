@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Profile;
+use App\Models\Section;
 
 class ProfileController extends Controller
 {
@@ -15,9 +16,34 @@ class ProfileController extends Controller
     public function index()
     {
         $profiles = Profile::query()
-        ->orderBy('code', 'asc')
-        ->get();
-        
+            ->orderBy('code', 'asc')
+            ->get();
+
+        foreach ($profiles as $profile) {
+
+            $profile->sections = Section::whereIn(
+                '_id',
+                $profile->section_ids
+            )
+            ->get([
+                '_id',
+                'name'
+            ])
+            ->map(function ($section) {
+
+                return [
+
+                    'id' => (string) $section->_id,
+
+                    'name' => $section->name,
+
+                ];
+
+            })
+            ->values();
+
+        }
+
         return response()->json($profiles);
     }
 
