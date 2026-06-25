@@ -1,5 +1,4 @@
 export interface Profile {
-    
 
     id: string;
 
@@ -7,5 +6,16 @@ export interface Profile {
 
     name: string;
 
-}
+    created_at: string;
 
+    section_ids: string[];
+
+    sections: {
+
+        id: string;
+
+        name: string;
+
+    }[];
+
+}

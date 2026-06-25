@@ -1,1 +1,266 @@
-<p>profiles works!</p>
+<div class="card">
+
+    <div class="card-header">
+
+        <h2>Perfils</h2>
+
+        <button 
+            class="btn btn-primary" 
+            (click)="openCreateModal()"> 
+            Nuevo Perfil 
+        </button>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Fecha de Creación</th>
+                <th>Acciones</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+            
+            @for (profile of profiles; track profile.id) {  <!-- Se utiliza *ngFor para llenar la tabla -->
+                <tr>
+
+                    <td>{{ profile.code }}</td>
+
+                    <td>{{ profile.name }}</td>
+
+                    <td>{{ profile.created_at }}</td>
+
+                    <td>
+                        <button class="btn btn-sm btn-outline-info me-2"
+                        (click)="viewProfile(profile)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-outline-warning me-2"
+                        (click)="editProfile(profile)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="btn btn-sm btn-outline-danger"
+                        (click)="deleteProfile(profile)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+
+    <!-- Modal de Detalle del Perfil -->
+    <div 
+    class="modal fade"
+    id="profileDetailModal"
+    tabindex="-1"
+    aria-labelledby="profileDetailModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+        <div class="modal-header bg-dark text-white">
+
+            <h5 class="modal-title" id="profileDetailModalLabel">
+            Detalle del Perfil
+            </h5>
+
+            <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div class="row">
+
+            <div class="col-md-8">
+
+                <p>
+                <strong>Código:</strong>
+                {{ selectedProfile?.code }}
+                </p>
+
+                <p>
+                <strong>Nombre:</strong>
+                {{ selectedProfile?.name }}
+                </p>
+
+                <p>
+                <strong>Fecha de Creación:</strong>
+                {{ selectedProfile?.created_at }}
+                </p>
+
+                <hr>
+
+                <h6>Secciones</h6>
+                
+                <ul class="list-group">
+
+                @for (section of selectedProfile?.sections; track section.id) {
+
+                    <li class="list-group-item">
+                    {{ section.name }}
+                    </li>
+
+                }
+
+                </ul>
+
+            </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cerrar
+            </button>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+    <!-- Finaliza Modal de Detalle del Perfil -->
+
+    <!-- Modal de Creación/Edición del Perfil -->
+     
+    <div
+    class="modal fade"
+    id="profileFormModal"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+        <div class="modal-header bg-dark text-white">
+
+            <h5 class="modal-title">
+
+            {{ isEditMode ? 'Editar Perfil' : 'Nuevo Perfil' }}
+
+            </h5>
+
+            <button
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+        <div class="modal-body"> <!-- Contenido del formulario -->
+            <form [formGroup]="profileForm">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">Nombre *</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="name">
+
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">Secciones</label>
+
+                    <div class="border rounded p-3">
+
+                        @for (section of sections; track section.id) {
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    [value]="section.id"
+                                    [checked]="profileForm.value.section_ids?.includes(section.id)"
+                                    (change)="onSectionChange($event)">
+
+                                <label class="form-check-label">
+
+                                    {{ section.name }}
+
+                                </label>
+
+                            </div>
+
+                        }
+
+                    </div>  
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancelar
+            </button>
+
+            <button class="btn btn-primary"
+                (click)="saveProfile()">
+
+            {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+
+            </button>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+    <!-- Finaliza Modal de Creación/Edición del Perfil -->
+
+
+
+
+
+
+
+
+
+</div>
