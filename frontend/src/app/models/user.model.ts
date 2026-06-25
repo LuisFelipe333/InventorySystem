@@ -1,6 +1,6 @@
 export interface User {
 
-    _id: string;
+    id: string;
 
     code: number;
 
@@ -15,5 +15,10 @@ export interface User {
     photo?: string;
 
     profile_ids: string[];
+
+    profiles: { 
+        id: string; 
+        name: string; 
+    }[];
 
 }

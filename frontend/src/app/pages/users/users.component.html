@@ -4,8 +4,10 @@
 
         <h2>Usuarios</h2>
 
-        <button class="btn-primary">
-            Nuevo Usuario
+        <button 
+            class="btn btn-primary" 
+            (click)="openCreateModal()"> 
+            Nuevo Usuario 
         </button>
 
     </div>
@@ -28,7 +30,7 @@
 
         <tbody>
             
-            @for (user of users; track user._id) {  <!-- Se utiliza *ngFor para llenar la tabla -->
+            @for (user of users; track user.id) {  <!-- Se utiliza *ngFor para llenar la tabla -->
                 <tr>
 
                     <td>{{ user.code }}</td>
@@ -65,8 +67,8 @@
     </table>
 
 
-    
-    <div
+    <!-- Modal de Detalle del Usuario -->
+    <div 
     class="modal fade"
     id="userDetailModal"
     tabindex="-1"
@@ -99,7 +101,7 @@
 
                 <img
                 [src]="environment.storageUrl + '/' + selectedUser?.photo"
-                class="img-fluid rounded-circle border"
+                class="user-photo"
                 alt="Foto de perfil">
 
             </div>
@@ -127,10 +129,10 @@
 
                 <ul class="list-group">
 
-                @for (profile of selectedUser?.profile_ids; track profile) {
+                @for (profile of selectedUser?.profiles; track profile.id) {
 
                     <li class="list-group-item">
-                    {{ profile }}
+                    {{ profile.name }}
                     </li>
 
                 }
@@ -159,6 +161,164 @@
     </div>
 
     </div>
+    <!-- Finaliza Modal de Detalle del Usuario -->
+
+    <!-- Modal de Creación/Edición del Usuario -->
+     
+    <div
+    class="modal fade"
+    id="userFormModal"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+        <div class="modal-header bg-dark text-white">
+
+            <h5 class="modal-title">
+
+            {{ isEditMode ? 'Editar Usuario' : 'Nuevo Usuario' }}
+
+            </h5>
+
+            <button
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal">
+            </button>
+
+        </div>
+
+        <div class="modal-body"> <!-- Contenido del formulario -->
+            <form [formGroup]="userForm">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">Nombre *</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="name">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">Correo electrónico *</label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            formControlName="email">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">Teléfono</label>
+
+                        <input
+                            type="text"
+                            class="form-control"
+                            formControlName="phone">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            {{ isEditMode ? 'Nueva contraseña' : 'Contraseña *' }}
+
+                        </label>
+
+                        <input
+                            type="password"
+                            class="form-control"
+                            formControlName="password">
+
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">Foto de perfil *</label>
+
+                    <input
+                        type="file"
+                        class="form-control"
+                        (change)="onPhotoSelected($event)">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">Perfiles</label>
+
+                    <div class="border rounded p-3">
+
+                        @for (profile of profiles; track profile.id) {
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    [value]="profile.id"
+                                    [checked]="userForm.value.profile_ids?.includes(profile.id)"
+                                    (change)="onProfileChange($event)">
+
+                                <label class="form-check-label">
+
+                                    {{ profile.name }}
+
+                                </label>
+
+                            </div>
+
+                        }
+
+                    </div>  
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+            class="btn btn-secondary"
+            data-bs-dismiss="modal">
+            Cancelar
+            </button>
+
+            <button class="btn btn-primary"
+                (click)="saveUser()">
+
+            {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+
+            </button>
+
+        </div>
+
+        </div>
+
+    </div>
+
+    </div>
+    <!-- Finaliza Modal de Creación/Edición del Usuario -->
+
 
 
 

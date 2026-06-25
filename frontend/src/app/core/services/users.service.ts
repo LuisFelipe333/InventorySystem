@@ -15,4 +15,22 @@ export class UsersService {
     getUsers() {
       return this.http.get<User[]>(this.apiUrl);
     }
+
+    deleteUser(id: string) { 
+      return this.http.delete(`${this.apiUrl}/${id}`); 
+    }
+
+    createUser(formData: FormData) {
+      return this.http.post(this.apiUrl, formData);
+    } 
+
+    updateUser(id: string, formData: FormData) {
+        formData.append('_method', 'PUT');
+
+        return this.http.post(
+          `${this.apiUrl}/${id}`,
+          formData
+        );
+    }
+
 }
