@@ -9,6 +9,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest; 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Models\Profile;
 
 class UserController extends Controller
 {
@@ -17,12 +18,24 @@ class UserController extends Controller
      */
     public function index()
     {
-         $users = User::query()
+        $users = User::query()
             ->orderBy('code', 'asc')
             ->get();
 
+        foreach ($users as $user) {
+
+            $user->profiles = Profile::query()
+                ->whereIn('_id', $user->profile_ids)
+                ->get([
+                    '_id',
+                    'name'
+                ]);
+
+        }
+
         return response()->json($users);
     }
+
 
     /**
      * Guarda un nuevo usuario en la base de datos.
