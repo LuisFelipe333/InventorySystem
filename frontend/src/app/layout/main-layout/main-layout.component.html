@@ -4,19 +4,31 @@
 
         <h2>Inventory</h2>
 
+
         <nav>
+            
+            <a routerLink="/dashboard">
+                Dashboard
+            </a>
 
-            <a routerLink="/dashboard">Dashboard</a>
+            @for (section of sections; track section.id) {
 
-            <a routerLink="/users">Usuarios</a>
+                <a [routerLink]="getRoute(section.name)">
+                    {{ section.name }}
+                </a>
 
-            <a routerLink="/products">Productos</a>
-
-            <a routerLink="/profiles">Perfiles</a>
-
-            <a routerLink="/logs">Logs</a>
+            }
 
         </nav>
+
+        
+        <button
+            class="btn-logout"
+            (click)="logout()">
+
+            Salir
+
+        </button>
 
     </aside>
 
@@ -25,5 +37,5 @@
         <router-outlet></router-outlet>
 
     </main>
-
+    
 </div>

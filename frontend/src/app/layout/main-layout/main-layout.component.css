@@ -15,6 +15,7 @@
 
 .sidebar {
     width: 250px;
+    height: 100vh;
     background: #111111;
     color: white;
     display: flex;
@@ -48,6 +49,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 15px;
+    flex: 1;
 }
 
 .sidebar a {
@@ -63,6 +65,26 @@
     background: #f9c80e;
     color: #111111;
     border-left: 4px solid white;
+}
+
+/* Botón salir */
+
+.btn-logout {
+    width: 85%;
+    margin: 20px auto;
+    padding: 8px 12px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.btn-logout:hover {
+    background: #bb2d3b;
 }
 
 /* Contenido */
@@ -182,6 +204,7 @@ select:focus {
 
     .sidebar {
         width: 100%;
+        height: auto;
     }
 
 }

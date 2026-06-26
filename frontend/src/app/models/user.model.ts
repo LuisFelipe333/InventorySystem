@@ -1,3 +1,5 @@
+import { Profile } from './profile.model';
+
 export interface User {
 
     id: string;
@@ -16,9 +18,6 @@ export interface User {
 
     profile_ids: string[];
 
-    profiles: { 
-        id: string; 
-        name: string; 
-    }[];
+    profiles: Profile[];
 
 }
