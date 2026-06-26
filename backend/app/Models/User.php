@@ -6,10 +6,11 @@ namespace App\Models;
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $connection = 'mongodb';
 
@@ -23,11 +24,13 @@ class User extends Authenticatable
         'phone',
         'photo',
         'profile_ids',
+        'api_token',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
     ];
 
     protected $casts = [ //Se castea profile_ids como un array y se hashea la contraseña
